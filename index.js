@@ -15,6 +15,7 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { addNewPost } from "./api.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
