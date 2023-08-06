@@ -15,6 +15,7 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { addNewPost } from "./api.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -110,7 +111,13 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
+        addNewPost({
+          token: getToken(),
+          description: description,
+          imageUrl: imageUrl,
+        }).then(() => {
+          goToPage(POSTS_PAGE);
+        });
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
