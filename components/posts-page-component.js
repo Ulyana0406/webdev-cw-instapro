@@ -3,9 +3,8 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, user } from "../index.js";
 import { addDislike, addLike } from "../api.js";
 import { likes } from "./likes-names-components.js";
-//import { formatDistanceToNow } from "date-fns";
-//import { ru } from "date-fns/locale";
-import { getUserFromLocalStorage } from "../helpers.js";
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
 
 export function renderPostsPageComponent({ appEl }) {
   function renderPosts() {
@@ -32,7 +31,10 @@ export function renderPostsPageComponent({ appEl }) {
           ${el.description}
         </p>
         <p class="post-date">
-        //Тут нужно подключить библиотеку
+        ${formatDistanceToNow(new Date(el.createdAt), {
+          locale: ru,
+          addSuffix: true,
+        })}
         </p>
       </li>`;;
       })

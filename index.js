@@ -23,6 +23,8 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
+export const createDate = format(new Date(task.created_at), 'dd/MM/yyyy hh:mm');
+
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
