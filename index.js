@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -16,14 +16,14 @@ import {
   saveUserToLocalStorage,
 } from "./helpers.js";
 import { addNewPost } from "./api.js";
-
+import { format } from "date-fns";
 
 
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-export const createDate = format(new Date(task.created_at), 'dd/MM/yyyy hh:mm');
+
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -72,11 +72,18 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      page = LOADING_PAGE;
+      renderApp();
+
+      return getUserPosts({ token: getToken(), id: data.userId })
+        .then((newPosts) => {
+          page = USER_POSTS_PAGE;
+          posts = newPosts;
+          return renderApp();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
     page = newPage;
@@ -87,6 +94,7 @@ export const goToPage = (newPage, data) => {
 
   throw new Error("страницы не существует");
 };
+
 
 const renderApp = () => {
   const appEl = document.getElementById("app");
@@ -136,9 +144,9 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    return renderPostsPageComponent({
+      appEl,
+    });
   }
 };
-
 goToPage(POSTS_PAGE);
