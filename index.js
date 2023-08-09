@@ -16,7 +16,7 @@ import {
   saveUserToLocalStorage,
 } from "./helpers.js";
 import { addNewPost } from "./api.js";
-import { format } from "date-fns";
+
 
 
 export let user = getUserFromLocalStorage();

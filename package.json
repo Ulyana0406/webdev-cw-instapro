@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "MVP аналога популярной соц. сети для обмена фотографиями",
   "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
     "dev": "webpack --mode development --watch"
   },
